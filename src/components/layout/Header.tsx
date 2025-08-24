@@ -157,13 +157,13 @@ export const Header: React.FC = () => {
             <img
               src="/dr-cesmac.png"
               alt="Dr. CESMAC"
-              className="w-16 h-20 object-contain"
+              className="w-16 h-20 object-contain relative -top-4"
             />
           </div>
         </div>
       </div>
 
-      <div className="md:hidden absolute top-14 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
+      <div className="md:hidden absolute top-9 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
         <AiOutlineQuestion className="w-3 h-3 text-icons" />
       </div>
     </div>
