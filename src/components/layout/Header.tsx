@@ -27,9 +27,9 @@ export const Header: React.FC = () => {
 
           <div className="flex items-center space-x-2 cursor-pointer">
             <img
-              src="/dash-nefro.png"
-              alt="Dashboard Nefrológico"
-              className="h-16 md:h-24"
+              src="/sistemas_info.png"
+              alt="Sistemas de Informação"
+              className="h-18 md:h-20"
             />
           </div>
         </div>
