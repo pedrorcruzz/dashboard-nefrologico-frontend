@@ -9,6 +9,8 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
+import { Header } from "~/components/layout/Header";
+import { Footer } from "~/components/layout/Footer";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 
@@ -67,20 +69,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <div className="p-2 flex gap-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: "font-bold",
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Inicio
-          </Link>{" "}
+      <body className="bg-background-primary">
+        <div className="flex min-h-screen flex-col">
+          <div className="w-full">
+            <Header />
+          </div>
+
+          <main className="flex-1 p-4 md:p-6">{children}</main>
+
+          <Footer />
         </div>
-        <hr />
-        {children}
+
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

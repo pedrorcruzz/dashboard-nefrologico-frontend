@@ -2,10 +2,15 @@
 
 @theme {
   --color-background-primary: #ffffff;
-  --color-background-sidebar: #0069ad;
+  --color-background-header: #ffffff;
   --color-foreground: #fcc730;
   --color-text-primary: #000;
   --color-card-background: #d9edf7;
   --color-icons: #ffffff;
+  --color-icons-text: #ffffff;
+  --color-icons-background-active: #0171be;
+  --color-icons-background: #0069ad;
   --color-subtext: #32708f;
+  --color-footer: #b3b3b3;
+  --color-footer-active: #32708f;
 }
