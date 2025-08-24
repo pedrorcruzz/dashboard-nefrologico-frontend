@@ -75,7 +75,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <Header />
           </div>
 
-          <main className="flex-1 p-4 md:p-6">{children}</main>
+          <main className="flex-1 p-4 md:p-6 pt-20 md:pt-4">{children}</main>
 
           <Footer />
         </div>

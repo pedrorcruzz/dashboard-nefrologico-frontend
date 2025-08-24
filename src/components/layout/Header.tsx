@@ -14,14 +14,14 @@ export const Header: React.FC = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="w-full">
-      <div className="bg-background-header h-16 px-6 flex items-center justify-between ">
+    <div className="w-full fixed top-0 left-0 right-0 z-50 md:relative">
+      <div className="bg-background-header h-20 md:h-24 px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-2">
             <img
               src="/cesmac-logo.png"
               alt="CESMAC Centro Universitário"
-              className="h-8"
+              className="h-6 md:h-8"
             />
           </div>
 
@@ -29,17 +29,17 @@ export const Header: React.FC = () => {
             <img
               src="/dash-nefro.png"
               alt="Dashboard Nefrológico"
-              className="h-24"
+              className="h-16 md:h-24"
             />
           </div>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-6">
           <div className="flex items-center space-x-3">
             <img
               src="/dr-cesmac.png"
               alt="Dr. CESMAC"
-              className="w-26 h-35 object-contain relative top-6"
+              className="w-26 h-34 object-contain relative top-4"
             />
 
             <div className="w-8 h-8 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors">
@@ -49,8 +49,8 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-background-header h-16 px-6 flex items-center justify-between border-b border-gray-200/60">
-        <div className="flex items-center space-x-8">
+      <div className="bg-background-header h-16 px-4 md:px-6 flex items-center justify-between border-b border-gray-200/60 -mt-2 md:-mt-4">
+        <div className="flex items-center space-x-4 md:space-x-8 overflow-x-auto">
           <Link
             to="/"
             className={`flex flex-col items-center space-y-1 cursor-pointer ${
@@ -152,7 +152,19 @@ export const Header: React.FC = () => {
               Relatórios
             </span>
           </Link>
+
+          <div className="md:hidden flex items-center space-x-2">
+            <img
+              src="/dr-cesmac.png"
+              alt="Dr. CESMAC"
+              className="w-16 h-20 object-contain"
+            />
+          </div>
         </div>
+      </div>
+
+      <div className="md:hidden absolute top-14 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
+        <AiOutlineQuestion className="w-3 h-3 text-icons" />
       </div>
     </div>
   );
