@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
           <p className="text-footer text-xs md:text-sm">
             Equipe de Desenvolvimento:{" "}
             <a
-              href="https://github.com/pedrorosa"
+              href="https://www.linkedin.com/in/pedrorcruzz"
               target="_blank"
               rel="noopener noreferrer"
               className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
             </a>
             ,{" "}
             <a
-              href="https://github.com/iagomauricio"
+              href="https://www.linkedin.com/in/iagomauricioo"
               target="_blank"
               rel="noopener noreferrer"
               className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
             </a>
             ,{" "}
             <a
-              href="https://github.com/tacyana"
+              href="https://www.linkedin.com/in/tacyana-batista-2082b7172"
               target="_blank"
               rel="noopener noreferrer"
               className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
             </a>{" "}
             e{" "}
             <a
-              href="https://github.com/wagner"
+              href="https://www.linkedin.com/in/wagner-palmeira-ti"
               target="_blank"
               rel="noopener noreferrer"
               className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
