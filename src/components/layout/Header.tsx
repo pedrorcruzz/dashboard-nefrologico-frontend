@@ -76,7 +76,7 @@ export const Header: React.FC = () => {
           </Link>
 
           <Link
-            to="/relatorios"
+            to="/"
             className={`flex flex-col items-center space-y-1 cursor-pointer ${
               currentPath === "/relatorios"
                 ? "border-b-2 border-foreground pb-1"
