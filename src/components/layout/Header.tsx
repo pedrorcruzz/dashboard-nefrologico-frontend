@@ -34,7 +34,7 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-6">
           <div className="flex items-center space-x-3">
             <img
               src="/dr-cesmac.png"
@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
               className="w-26 h-34 object-contain relative top-4"
             />
 
-            <div className="w-8 h-8 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors">
+            <div className="w-8 h-8 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors relative -top-4 -left-4">
               <AiOutlineQuestion className="w-4 h-4 text-icons" />
             </div>
           </div>
@@ -153,7 +153,7 @@ export const Header: React.FC = () => {
             </span>
           </Link>
 
-          <div className="lg:hidden flex items-center space-x-2">
+          <div className="md:hidden flex items-center space-x-2">
             <img
               src="/dr-cesmac.png"
               alt="Dr. CESMAC"
@@ -163,7 +163,7 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      <div className="lg:hidden absolute top-9 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
+      <div className="md:hidden absolute top-9 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
         <AiOutlineQuestion className="w-3 h-3 text-icons" />
       </div>
     </div>

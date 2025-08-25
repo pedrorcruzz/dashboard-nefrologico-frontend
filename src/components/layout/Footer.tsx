@@ -4,14 +4,14 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background-primary border-t border-gray-200/30 py-4 lg:py-6 px-4 lg:px-6">
-      <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-        <div className="flex flex-col space-y-2 lg:space-y-1 text-center lg:text-left">
-          <p className="text-footer text-xs lg:text-sm">
+    <footer className="bg-background-primary border-t border-gray-200/30 py-4 md:py-6 px-4 md:px-6">
+      <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="flex flex-col space-y-2 md:space-y-1 text-center md:text-left">
+          <p className="text-footer text-xs md:text-sm">
             © {currentYear} TODOS OS DIREITOS RESERVADOS CESMAC | Dashboard
             Nefrológico | Versão 1.0
           </p>
-          <p className="text-footer text-xs lg:text-sm">
+          <p className="text-footer text-xs md:text-sm">
             Equipe de Desenvolvimento:{" "}
             <a
               href="https://github.com/pedrorosa"
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
           </p>
         </div>
 
-        <div className="hidden lg:flex items-center">
+        <div className="hidden md:flex items-center">
           <img
             src="/apple-touch-icon.png"
             alt="Logo CESMAC"
@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
           />
         </div>
 
-        <div className="lg:hidden flex justify-center pt-2">
+        <div className="md:hidden flex justify-center pt-2">
           <img
             src="/apple-touch-icon.png"
             alt="Logo CESMAC"
