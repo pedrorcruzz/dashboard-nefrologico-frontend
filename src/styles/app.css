@@ -11,6 +11,7 @@
   --color-icons-background-active: #0171be;
   --color-icons-background: #0069ad;
   --color-subtext: #32708f;
-  --color-footer: #b3b3b3;
-  --color-footer-active: #32708f;
+  --color-footer-background: #0171be;
+  --color-footer: #ffffff;
+  --color-footer-active: #d9edf7;
 }
