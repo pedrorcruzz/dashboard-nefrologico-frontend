@@ -7,7 +7,7 @@ import {
 
 export function NotFound({ children }: { children?: any }) {
   return (
-    <div className="min-h-screen bg-background-primary flex items-center justify-center">
+    <div className="min-h-screen bg-background-primary flex items-start justify-center pt-20">
       <div className="max-w-md w-full text-center space-y-6">
         <div className="flex justify-center">
           <img
