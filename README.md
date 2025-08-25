@@ -1,72 +1,143 @@
-# Welcome to TanStack.com!
+# Dashboard Nefrológico Pediátrico - CESMAC
 
-This site is built with TanStack Router!
+Sistema de gerenciamento e monitoramento de dados nefrológicos pediátricos desenvolvido para o CESMAC (Centro Universitário).
 
-- [TanStack Router Docs](https://tanstack.com/router)
+## 🏥 Sobre o Projeto
 
-It's deployed automagically with Netlify!
+Este dashboard foi desenvolvido para auxiliar profissionais de saúde no acompanhamento e análise de dados relacionados à nefrologia pediátrica, incluindo:
 
-- [Netlify](https://netlify.com/)
+- **Gestão de Pacientes**: Controle de pacientes ativos e novos
+- **Monitoramento de Exames**: Acompanhamento de exames básicos e especializados
+- **Métricas de Qualidade**: Indicadores de performance e satisfação
+- **Relatórios**: Geração de relatórios médicos e estatísticos
 
-## Development
+## 🚀 Tecnologias Utilizadas
 
-From your terminal:
+- **Frontend**: React 18 + TypeScript
+- **Roteamento**: TanStack Router
+- **Estilização**: Tailwind CSS
+- **Animações**: Framer Motion
+- **Ícones**: React Icons
+- **Build Tool**: Vite
+- **Package Manager**: Bun
 
-```sh
-pnpm install
-pnpm dev
+## 🎨 Design System
+
+O projeto utiliza um sistema de cores personalizado definido em CSS custom properties:
+
+- **Cores Primárias**: Azul (#0171be) e Amarelo (#fcc730)
+- **Cores de Status**: Sucesso, erro, warning e info
+- **Componentes**: Cards, botões e filtros com design moderno
+- **Responsividade**: Layout adaptável para mobile, tablet e desktop
+
+## 📱 Funcionalidades
+
+### Dashboard Principal
+
+- **KPIs**: Indicadores principais de pacientes e exames
+- **Gráficos**: Evolução de pacientes e distribuição de exames
+- **Métricas**: Tempo de atendimento e satisfação do paciente
+- **Filtros**: Períodos e tipos de exames
+
+### Sistema de Manutenção
+
+- **Modo de Manutenção**: Ativado via variável de ambiente
+- **Páginas de Erro**: Tratamento elegante de erros 404 e 500
+- **Layout Responsivo**: Header e footer condicionais
+
+## 🛠️ Instalação e Desenvolvimento
+
+### Pré-requisitos
+
+- Node.js 18+ ou Bun
+- Git
+
+### Configuração
+
+```bash
+git clone <repository-url>
+cd dashboard-nefrologico-frontend
+
+bun install
+
+cp .env.example .env
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+### Desenvolvimento
 
-## Editing and previewing the docs of TanStack projects locally
-
-The documentations for all TanStack projects except for `React Charts` are hosted on [https://tanstack.com](https://tanstack.com), powered by this TanStack Router app.
-In production, the markdown doc pages are fetched from the GitHub repos of the projects, but in development they are read from the local file system.
-
-Follow these steps if you want to edit the doc pages of a project (in these steps we'll assume it's [`TanStack/form`](https://github.com/tanstack/form)) and preview them locally :
-
-1. Create a new directory called `tanstack`.
-
-```sh
-mkdir tanstack
+```bash
+bun dev
 ```
 
-2. Enter the directory and clone this repo and the repo of the project there.
+### Build de Produção
 
-```sh
-cd tanstack
-git clone git@github.com:TanStack/tanstack.com.git
-git clone git@github.com:TanStack/form.git
+```bash
+bun run build
+bun run preview
 ```
 
-> [!NOTE]
-> Your `tanstack` directory should look like this:
->
-> ```
-> tanstack/
->    |
->    +-- form/
->    |
->    +-- tanstack.com/
-> ```
+## 🔧 Variáveis de Ambiente
 
-> [!WARNING]
-> Make sure the name of the directory in your local file system matches the name of the project's repo. For example, `tanstack/form` must be cloned into `form` (this is the default) instead of `some-other-name`, because that way, the doc pages won't be found.
-
-3. Enter the `tanstack/tanstack.com` directory, install the dependencies and run the app in dev mode:
-
-```sh
-cd tanstack.com
-pnpm i
-# The app will run on https://localhost:3000 by default
-pnpm dev
+```bash
+VITE_MAINTENANCE_MODE=false
 ```
 
-4. Now you can visit http://localhost:3000/form/latest/docs/overview in the browser and see the changes you make in `tanstack/form/docs`.
+## 📁 Estrutura do Projeto
 
-> [!NOTE]
-> The updated pages need to be manually reloaded in the browser.
+```
+src/
+├── components/
+│   ├── cards/
+│   ├── layout/
+│   └── ui/
+├── hooks/
+├── routes/
+├── styles/
+└── utils/
+```
 
-> [!WARNING]
-> You will need to update the `docs/config.json` file (in the project's repo) if you add a new doc page!
+## 🎯 Componentes Principais
+
+- **KPICard**: Indicadores principais com animações
+- **DistributionCard**: Gráficos de distribuição responsivos
+- **ChartCard**: Cards para gráficos e visualizações
+- **MetricCard**: Métricas com gráficos de barras
+- **FilterCards**: Sistema de filtros responsivo
+- **MaintenanceMode**: Página de manutenção elegante
+
+## 📊 Dados e Mock
+
+O sistema utiliza dados mock para desenvolvimento, estruturados através da interface `SystemData`:
+
+- **Pacientes**: Total, ativos e novos por mês
+- **Exames**: Básicos e especializados com distribuição
+- **KPIs**: Variações e métricas de performance
+- **Gráficos**: Dados para visualizações e relatórios
+
+## 🚀 Deploy
+
+O projeto está configurado para deploy automático via Netlify, com:
+
+- Build automático a partir do branch principal
+- Preview de pull requests
+- Deploy de branches de feature
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto é desenvolvido para o CESMAC e está sob licença institucional.
+
+## 📞 Suporte
+
+Para dúvidas ou suporte técnico, entre em contato com a equipe de desenvolvimento do CESMAC.
+
+---
+
+**Desenvolvido com ❤️ para o CESMAC**

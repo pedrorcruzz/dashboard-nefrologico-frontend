@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
           <img
             src="/apple-touch-icon.png"
             alt="Logo CESMAC"
-            className="w-12 h-12 object-contain"
+            className="w-16 h-16 object-contain"
           />
         </div>
 
@@ -63,7 +63,7 @@ export const Footer: React.FC = () => {
           <img
             src="/apple-touch-icon.png"
             alt="Logo CESMAC"
-            className="w-10 h-10 object-contain"
+            className="w-12 h-12 object-contain"
           />
         </div>
       </div>
