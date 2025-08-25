@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="w-full fixed top-0 left-0 right-0 z-50 lg:relative">
+    <div className="w-full fixed top-0 left-0 right-0 z-50">
       <div className="bg-background-header h-20 lg:h-24 px-4 lg:px-6 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-2">
@@ -76,58 +76,6 @@ export const Header: React.FC = () => {
           </Link>
 
           <Link
-            to="/pacientes"
-            className={`flex flex-col items-center space-y-1 cursor-pointer ${
-              currentPath === "/pacientes"
-                ? "border-b-2 border-foreground pb-1"
-                : ""
-            }`}
-          >
-            <AiOutlineUser
-              className={`w-5 h-5 ${
-                currentPath === "/pacientes"
-                  ? "text-text-primary"
-                  : "text-text-primary/60"
-              }`}
-            />
-            <span
-              className={`text-sm font-medium ${
-                currentPath === "/pacientes"
-                  ? "text-text-primary"
-                  : "text-text-primary/60"
-              }`}
-            >
-              Pacientes
-            </span>
-          </Link>
-
-          <Link
-            to="/exames"
-            className={`flex flex-col items-center space-y-1 cursor-pointer ${
-              currentPath === "/exames"
-                ? "border-b-2 border-foreground pb-1"
-                : ""
-            }`}
-          >
-            <AiOutlineBarChart
-              className={`w-5 h-5 ${
-                currentPath === "/exames"
-                  ? "text-text-primary"
-                  : "text-text-primary/60"
-              }`}
-            />
-            <span
-              className={`text-sm font-medium ${
-                currentPath === "/exames"
-                  ? "text-text-primary"
-                  : "text-text-primary/60"
-              }`}
-            >
-              Exames
-            </span>
-          </Link>
-
-          <Link
             to="/relatorios"
             className={`flex flex-col items-center space-y-1 cursor-pointer ${
               currentPath === "/relatorios"
@@ -153,17 +101,17 @@ export const Header: React.FC = () => {
             </span>
           </Link>
 
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2">
             <img
               src="/dr-cesmac.png"
               alt="Dr. CESMAC"
-              className="w-16 h-20 object-contain relative -top-4"
+              className="w-16 h-20 object-contain"
             />
           </div>
         </div>
       </div>
 
-      <div className="md:hidden absolute top-9 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
+      <div className="md:hidden absolute top-4 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center cursor-pointer hover:bg-icons-background-active transition-colors z-10">
         <AiOutlineQuestion className="w-3 h-3 text-icons" />
       </div>
     </div>

@@ -9,10 +9,12 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
+import { MaintenanceMode } from "~/components/MaintenanceMode";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
+import { useMaintenanceMode } from "~/hooks/useMaintenanceMode";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -64,8 +66,24 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const isMaintenanceMode = useMaintenanceMode();
+
+  if (isMaintenanceMode) {
+    return (
+      <html lang="pt-BR">
+        <head>
+          <HeadContent />
+        </head>
+        <body className="bg-background-primary">
+          <MaintenanceMode />
+          <Scripts />
+        </body>
+      </html>
+    );
+  }
+
   return (
-    <html>
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -75,7 +93,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <Header />
           </div>
 
-          <main className="flex-1 p-4 md:p-6 pt-20 md:pt-4">{children}</main>
+          <main className="flex-1 p-2 md:p-8 pt-40 md:pt-48 md:pb-2 pb-10">
+            {children}
+          </main>
 
           <Footer />
         </div>

@@ -11,8 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RelatoriosRouteImport } from './routes/relatorios'
 import { Route as RedirectRouteImport } from './routes/redirect'
-import { Route as PacientesRouteImport } from './routes/pacientes'
-import { Route as ExamesRouteImport } from './routes/exames'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RelatoriosRoute = RelatoriosRouteImport.update({
@@ -25,16 +23,6 @@ const RedirectRoute = RedirectRouteImport.update({
   path: '/redirect',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PacientesRoute = PacientesRouteImport.update({
-  id: '/pacientes',
-  path: '/pacientes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExamesRoute = ExamesRouteImport.update({
-  id: '/exames',
-  path: '/exames',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,38 +31,30 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/exames': typeof ExamesRoute
-  '/pacientes': typeof PacientesRoute
   '/redirect': typeof RedirectRoute
   '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/exames': typeof ExamesRoute
-  '/pacientes': typeof PacientesRoute
   '/redirect': typeof RedirectRoute
   '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/exames': typeof ExamesRoute
-  '/pacientes': typeof PacientesRoute
   '/redirect': typeof RedirectRoute
   '/relatorios': typeof RelatoriosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/exames' | '/pacientes' | '/redirect' | '/relatorios'
+  fullPaths: '/' | '/redirect' | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/exames' | '/pacientes' | '/redirect' | '/relatorios'
-  id: '__root__' | '/' | '/exames' | '/pacientes' | '/redirect' | '/relatorios'
+  to: '/' | '/redirect' | '/relatorios'
+  id: '__root__' | '/' | '/redirect' | '/relatorios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ExamesRoute: typeof ExamesRoute
-  PacientesRoute: typeof PacientesRoute
   RedirectRoute: typeof RedirectRoute
   RelatoriosRoute: typeof RelatoriosRoute
 }
@@ -95,20 +75,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RedirectRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pacientes': {
-      id: '/pacientes'
-      path: '/pacientes'
-      fullPath: '/pacientes'
-      preLoaderRoute: typeof PacientesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/exames': {
-      id: '/exames'
-      path: '/exames'
-      fullPath: '/exames'
-      preLoaderRoute: typeof ExamesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -121,8 +87,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ExamesRoute: ExamesRoute,
-  PacientesRoute: PacientesRoute,
   RedirectRoute: RedirectRoute,
   RelatoriosRoute: RelatoriosRoute,
 }
