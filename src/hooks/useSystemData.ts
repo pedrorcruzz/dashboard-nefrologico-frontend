@@ -45,6 +45,26 @@ export interface SystemData {
   };
 }
 
+function translateExamName(name: string): string {
+  const key = (name || "").toLowerCase().trim();
+  const map: Record<string, string> = {
+    // common canonical names
+    "ultrasound": "Ultrassom",
+    "ultrasonic b": "Ultrassom modo B",
+    "mri": "Ressonância Magnética",
+    "ctu": "Urografia por TC",
+    "ct urography": "Urografia por TC",
+    "mr urography": "Urografia por RM",
+    "fine-needle aspiration biopsy": "Biópsia por Agulha Fina",
+    "fine needle aspiration biopsy": "Biópsia por Agulha Fina",
+  };
+  // try exact, then simple normalizations
+  if (map[key]) return map[key];
+  // strip punctuation and extra spaces for robustness
+  const normalized = key.replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ");
+  return map[normalized] ?? name;
+}
+
 function formatMonthLabel(date: Date): string {
   const mm = String(date.getMonth() + 1).padStart(2, "0");
   const yy = String(date.getFullYear()).slice(-2);
@@ -104,7 +124,7 @@ export const useSystemData = (): SystemData => {
         setGender(g);
 
         const mappedCats = (cats.data ?? []).map((c) => ({
-          label: c.nome_exame,
+          label: translateExamName(c.nome_exame),
           count: Number(c.total_exames ?? 0) || 0,
         }));
         setCategories(mappedCats);
