@@ -17,8 +17,9 @@ import {
   DistributionCard,
   MetricCard,
 } from "../components/cards";
-import { AiOutlineUser, AiOutlineBarChart, AiOutlineEye } from "react-icons/ai";
 import { BsGenderMale, BsGenderFemale } from "react-icons/bs";
+import { MdOutlineMedicalServices } from "react-icons/md";
+import { FaStethoscope, FaMicroscope, FaUserMd } from "react-icons/fa";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -45,7 +46,7 @@ function RouteComponent() {
             <KPICard
               title="Total de Pacientes"
               value={data.totalPatients.toLocaleString()}
-              icon={AiOutlineUser}
+              icon={FaUserMd}
             />
 
             <KPICard
@@ -62,7 +63,7 @@ function RouteComponent() {
             <KPICard
               title="Total de Exames"
               value={data.totalExams.toLocaleString()}
-              icon={AiOutlineBarChart}
+              icon={FaStethoscope}
             />
           </fieldset>
         </section>
@@ -161,24 +162,28 @@ function RouteComponent() {
             aria-label="Estatísticas do sistema"
           >
             <StatCard
-              title="Total Diagnósticos (12m)"
-              value={data.charts.patientEvolution.data.appliedValue.reduce(
-                (s, v) => s + v,
-                0
-              )}
-              icon={AiOutlineUser}
-            />
-
-            <StatCard
-              title="Categorias Distintas"
+              title="Categorias de Exames"
               value={data.charts.examDistribution.labels.length}
-              icon={AiOutlineBarChart}
+              icon={MdOutlineMedicalServices}
             />
 
             <StatCard
-              title="Novos no Mês"
-              value={data.newPatientsThisMonth}
-              icon={AiOutlineEye}
+              title="Exame Mais Feito"
+              value={data.topCategory ?? "-"}
+              icon={FaMicroscope}
+            />
+
+            <StatCard
+              title="Idade com Mais Pacientes"
+              value={(() => {
+                const ages = data.patientsByAge ?? [];
+                if (ages.length === 0) return "-";
+                const maxAge = ages.reduce((max, current) => 
+                  current.total > max.total ? current : max
+                );
+                return `${maxAge.age} anos`;
+              })()}
+              icon={FaUserMd}
             />
           </fieldset>
         </section>
@@ -201,8 +206,11 @@ function RouteComponent() {
             />
 
             <MetricCard
-              title="Top Categoria de Exame"
-              value={data.topCategory ?? "-"}
+              title="Total Diagnósticos (12m)"
+              value={data.charts.patientEvolution.data.appliedValue.reduce(
+                (s, v) => s + v,
+                0
+              )}
               showGraph={false}
             />
           </fieldset>
