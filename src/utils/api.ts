@@ -43,7 +43,7 @@ export interface DiagnosticoTabelaPage {
     id: number;
     cid10: string;
     title: string;
-    diagnosis_date: string; // ISO
+    diagnosis_date: string;
     age: number;
     gender: string;
   }>;
@@ -54,7 +54,6 @@ const BASE_URL = (import.meta as unknown as { env?: Record<string, unknown> })
 
 function getBaseUrl(): string {
   if (!BASE_URL) {
-    console.warn("VITE_URL_API is not set. Defaulting to empty base URL.");
     return "";
   }
   return BASE_URL.replace(/\/$/, "");

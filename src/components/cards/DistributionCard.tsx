@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useState } from "react";
 import { FilterCards } from "./FilterCards";
 
 interface DistributionCardProps {
@@ -17,7 +18,18 @@ export const DistributionCard = ({
   className = "",
 }: DistributionCardProps) => {
   const cardId = title.replace(/\s+/g, "-").toLowerCase();
-  const totalValue = data.reduce((sum, item) => sum + item.value, 0);
+  // valores já chegam em porcentagem; somatório pode não ser exatamente 100 devido a arredondamento
+  const [tooltip, setTooltip] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    text: string;
+  }>({
+    visible: false,
+    x: 0,
+    y: 0,
+    text: "",
+  });
 
   return (
     <motion.section
@@ -38,14 +50,88 @@ export const DistributionCard = ({
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
-        <div
-          className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 bg-card-tertiary rounded-full flex items-center justify-center"
-          role="img"
-          aria-label={`Total: ${totalValue.toFixed(1)}%`}
-        >
-          <span className="text-card-tertiary-text text-2xl sm:text-3xl lg:text-3xl font-bold">
-            {totalValue.toFixed(1)}%
-          </span>
+        {/* Donut chart */}
+        <div className="w-48 h-48 sm:w-56 sm:h-56 relative">
+          {(() => {
+            const size = 160; // viewBox
+            const center = size / 2;
+            const radius = 60;
+            const stroke = 28;
+            const circumference = 2 * Math.PI * radius;
+            const total = data.reduce((s, d) => s + d.value, 0) || 1;
+            let offsetAcc = 0;
+            return (
+              <svg
+                viewBox={`0 0 ${size} ${size}`}
+                role="img"
+                aria-label={`Gráfico de pizza de distribuição de exames`}
+                onMouseLeave={() =>
+                  setTooltip({ visible: false, x: 0, y: 0, text: "" })
+                }
+              >
+                <circle
+                  cx={center}
+                  cy={center}
+                  r={radius}
+                  fill="none"
+                  stroke="#e5e7eb"
+                  strokeWidth={stroke}
+                />
+                {data.map((seg, idx) => {
+                  const portion = (seg.value / total) * circumference;
+                  // largura mínima bem pequena para fatias minúsculas sem formar círculo
+                  const portionUsed = portion < 0.5 ? 0.5 : portion;
+                  const dasharray = `${portionUsed} ${circumference - portionUsed}`;
+                  const dashoffset = circumference - offsetAcc;
+                  offsetAcc += portionUsed;
+                  // no-op: kept previously for rounded caps; not needed now
+                  return (
+                    <g
+                      key={`pie-${seg.label}-${idx}`}
+                      onPointerMove={(e) => {
+                        const rect = (
+                          e.currentTarget.ownerSVGElement as SVGSVGElement
+                        ).getBoundingClientRect();
+                        setTooltip({
+                          visible: true,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                          text: `${seg.label}: ${seg.value}%`,
+                        });
+                      }}
+                    >
+                      <circle
+                        cx={center}
+                        cy={center}
+                        r={radius}
+                        fill="none"
+                        stroke={seg.color}
+                        strokeWidth={stroke}
+                        strokeDasharray={dasharray}
+                        strokeDashoffset={dashoffset}
+                        strokeLinecap="butt"
+                        transform={`rotate(-90 ${center} ${center})`}
+                      />
+                      {/* sem marcador extra para não parecer um círculo grande */}
+                    </g>
+                  );
+                })}
+              </svg>
+            );
+          })()}
+          {tooltip.visible && (
+            <div
+              className="absolute px-2 py-1 text-xs bg-white border border-card-line/40 rounded shadow"
+              style={{
+                left: tooltip.x + 8,
+                top: tooltip.y + 8,
+                pointerEvents: "none",
+              }}
+              role="tooltip"
+            >
+              {tooltip.text}
+            </div>
+          )}
         </div>
 
         <ul

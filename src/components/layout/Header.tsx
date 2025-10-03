@@ -66,7 +66,7 @@ export const Header = () => {
         <div className="flex items-center space-x-4 lg:space-x-8 overflow-x-auto">
           <Link
             to="/"
-            className={`flex flex-col items-center space-y-1 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 rounded-md p-1 ${
+            className={`flex flex-col items-center space-y-1 focus:outline-none p-1 ${
               currentPath === "/" ? "border-b-2 border-foreground pb-1" : ""
             }`}
             aria-current={currentPath === "/" ? "page" : undefined}
@@ -93,7 +93,7 @@ export const Header = () => {
 
           <Link
             to="/relatorios"
-            className={`flex flex-col items-center space-y-1 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 rounded-md p-1 ${
+            className={`flex flex-col items-center space-y-1 focus:outline-none p-1 ${
               currentPath === "/relatorios"
                 ? "border-b-2 border-foreground pb-1"
                 : ""

@@ -91,8 +91,8 @@ function RouteComponent() {
                               index
                             ]
                           }
-                          aria-valuemin="0"
-                          aria-valuemax="10000"
+                          aria-valuemin={0}
+                          aria-valuemax={10000}
                           aria-label={`${label}: ${data.charts.patientEvolution.data.appliedValue[index]} pacientes`}
                         >
                           <div
@@ -124,18 +124,39 @@ function RouteComponent() {
 
             <DistributionCard
               title="Distribuição de Exames"
-              data={[
-                {
-                  label: "Exames Básicos",
-                  value: data.charts.examDistribution.data[0],
-                  color: "#0171be",
-                },
-                {
-                  label: "Exames Especializados",
-                  value: data.charts.examDistribution.data[1],
-                  color: "#fcc730",
-                },
-              ]}
+              data={(() => {
+                const labels = data.charts.examDistribution.labels;
+                const values = data.charts.examDistribution.data;
+                const pairs = labels.map((l, i) => ({
+                  label: l,
+                  value: values[i] ?? 0,
+                }));
+                const sorted = pairs.sort((a, b) => b.value - a.value);
+                const top = sorted.slice(0, 4);
+                const rest = sorted.slice(4);
+                const restValue = rest.reduce((s, x) => s + x.value, 0);
+                const palette = [
+                  "#0171be",
+                  "#fcc730",
+                  "#34d399",
+                  "#f59e0b",
+                  "#9ca3af",
+                ];
+                const topWithColors = top.map((t, i) => ({
+                  ...t,
+                  color: palette[i % palette.length],
+                }));
+                return restValue > 0
+                  ? [
+                      ...topWithColors,
+                      {
+                        label: "Outros",
+                        value: Number(restValue.toFixed(2)),
+                        color: palette[4],
+                      },
+                    ]
+                  : topWithColors;
+              })()}
             />
           </div>
         </section>
