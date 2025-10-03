@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { useSystemData } from "../hooks/useSystemData";
 import {
   getDiagnosticosCidFaixaEtaria,
   getDiagnosticosCidTabela,
@@ -25,6 +26,7 @@ function ReportPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
   const [ageData, setAgeData] = useState<{ age: number; total: number }[]>([]);
+  const summary = useSystemData();
 
   useEffect(() => {
     let cancelled = false;
@@ -67,9 +69,19 @@ function ReportPage() {
           <h2 className="text-card-text text-lg font-semibold">Diagnósticos por Mês (últimos 12 meses)</h2>
           <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
             <div className="space-y-2" role="img" aria-label="Barras com total de diagnósticos por mês">
-              {/** We reuse the same computation as in useSystemData by deriving from ageData not needed here; this report focuses on table & age. We'll fetch minimal again in UI: */}
-              {/* Placeholder: this section will be populated via the same hook route if needed */}
-              <span className="text-card-subtext text-sm">Consolidado exibido na página Resumo.</span>
+              {summary.charts.patientEvolution.labels.map((label, idx) => (
+                <div key={`report-month-${label}-${summary.charts.patientEvolution.data.appliedValue[idx]}`} className="flex items-center gap-3">
+                  <span className="text-card-text text-xs w-12">{label}</span>
+                  <div className="flex-1 bg-card-tertiary rounded-full h-3">
+                    <div
+                      className="h-3 bg-card-items rounded-full"
+                      style={{ width: `${Math.min(100, (summary.charts.patientEvolution.data.appliedValue[idx] / Math.max(1, Math.max(...summary.charts.patientEvolution.data.appliedValue))) * 100)}%` }}
+                      title={`${label}: ${summary.charts.patientEvolution.data.appliedValue[idx]}`}
+                    />
+                  </div>
+                  <span className="text-card-text text-xs w-10 text-right">{summary.charts.patientEvolution.data.appliedValue[idx]}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

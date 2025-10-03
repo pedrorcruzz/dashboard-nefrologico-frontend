@@ -141,20 +141,20 @@ function RouteComponent() {
             aria-label="Estatísticas do sistema"
           >
             <StatCard
-              title="Pacientes em Tratamento"
-              value={data.activePatients}
+              title="Total Diagnósticos (12m)"
+              value={data.charts.patientEvolution.data.appliedValue.reduce((s, v) => s + v, 0)}
               icon={AiOutlineUser}
             />
 
             <StatCard
-              title="Exames Pendentes"
-              value={Math.floor(data.totalExams * 0.15)}
+              title="Categorias Distintas"
+              value={data.charts.examDistribution.labels.length}
               icon={AiOutlineBarChart}
             />
 
             <StatCard
-              title="Taxa de Sucesso"
-              value="94.2%"
+              title="Novos no Mês"
+              value={data.newPatientsThisMonth}
               icon={AiOutlineEye}
             />
           </fieldset>
@@ -169,19 +169,16 @@ function RouteComponent() {
             aria-label="Métricas de atendimento"
           >
             <MetricCard
-              title="Tempo Médio de Atendimento"
-              value="25 min"
-              change={{ value: -8, from: "last month" }}
+              title="Diagnósticos no Mês"
+              value={data.kpis.examsPerMonth.value}
               showGraph={true}
-              graphData={[32, 30, 28, 27, 26, 25, 24, 25]}
+              graphData={data.charts.patientEvolution.data.appliedValue.slice(-8)}
             />
 
             <MetricCard
-              title="Satisfação do Paciente"
-              value="4.8/5.0"
-              change={{ value: 5, from: "last month" }}
-              showGraph={true}
-              graphData={[4.2, 4.3, 4.5, 4.6, 4.7, 4.8, 4.8, 4.8]}
+              title="Top Categoria de Exame"
+              value={data.topCategory ?? "-"}
+              showGraph={false}
             />
           </fieldset>
         </section>

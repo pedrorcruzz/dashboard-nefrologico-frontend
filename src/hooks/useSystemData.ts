@@ -13,6 +13,8 @@ export interface SystemData {
   newPatientsThisMonth: number;
   totalExams: number;
   gender: { M: number; F: number };
+  ages?: Array<{ age: number; total: number }>;
+  topCategory?: string;
 
   kpis: {
     examsPerMonth: {
@@ -68,6 +70,8 @@ export const useSystemData = (): SystemData => {
     Array<{ label: string; count: number }>
   >([]);
   const [diagnosisDates, setDiagnosisDates] = useState<Date[]>([]);
+  const [ages, setAges] = useState<Array<{ age: number; total: number }>>([]);
+  const [topCategory, setTopCategory] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
@@ -94,12 +98,16 @@ export const useSystemData = (): SystemData => {
         });
         setGender(g);
 
-        setCategories(
-          (cats.data ?? []).map((c) => ({
-            label: c.nome_exame,
-            count: Number(c.total_exames ?? 0) || 0,
-          }))
-        );
+        const mappedCats = (cats.data ?? []).map((c) => ({
+          label: c.nome_exame,
+          count: Number(c.total_exames ?? 0) || 0,
+        }));
+        setCategories(mappedCats);
+        if (mappedCats.length > 0) {
+          setTopCategory(
+            mappedCats.slice().sort((a, b) => b.count - a.count)[0].label,
+          );
+        }
 
         const dates: Date[] = [];
         (diag.data ?? []).forEach((d) => {
@@ -107,6 +115,18 @@ export const useSystemData = (): SystemData => {
           if (parsed) dates.push(parsed);
         });
         setDiagnosisDates(dates);
+        // lazy fetch faixa etária (não bloqueia UI)
+        import("../utils/api").then(({ getDiagnosticosCidFaixaEtaria }) => {
+          getDiagnosticosCidFaixaEtaria()
+            .then((agesRes) => {
+              const arr = (agesRes.data ?? []).map((a) => ({
+                age: a.idade,
+                total: Number(a.total_de_cid10 ?? 0) || 0,
+              }));
+              setAges(arr);
+            })
+            .catch(() => {});
+        });
       } catch (e) {
         console.error("Failed to load system data", e);
       }
@@ -169,6 +189,8 @@ export const useSystemData = (): SystemData => {
     newPatientsThisMonth: newThisMonth,
     totalExams: totals.exams,
     gender,
+    ages,
+    topCategory,
 
     kpis: {
       examsPerMonth: {
