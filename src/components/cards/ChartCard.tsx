@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { FilterCards } from "./FilterCards";
 
 interface ChartCardProps {
   title: string;
@@ -29,7 +28,6 @@ export const ChartCard = ({
         >
           {title}
         </h3>
-        <FilterCards />
       </div>
 
       <div className="h-64" role="img" aria-label={`Gráfico: ${title}`}>

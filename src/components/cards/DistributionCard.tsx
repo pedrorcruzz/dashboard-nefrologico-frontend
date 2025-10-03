@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import { FilterCards } from "./FilterCards";
 
 interface DistributionCardProps {
   title: string;
@@ -46,7 +45,6 @@ export const DistributionCard = ({
         >
           {title}
         </h3>
-        <FilterCards />
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
