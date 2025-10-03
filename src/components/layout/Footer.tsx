@@ -1,6 +1,4 @@
-import React from "react";
-
-export const Footer: React.FC = () => {
+export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,7 +15,8 @@ export const Footer: React.FC = () => {
               href="https://www.linkedin.com/in/pedrorcruzz"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
+              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-footer-active focus:ring-offset-2 focus:ring-offset-footer-background rounded"
+              aria-label="Abrir perfil do Pedro Rosa no LinkedIn (nova aba)"
             >
               Pedro Rosa
             </a>
@@ -26,7 +25,8 @@ export const Footer: React.FC = () => {
               href="https://www.linkedin.com/in/iagomauricioo"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
+              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-footer-active focus:ring-offset-2 focus:ring-offset-footer-background rounded"
+              aria-label="Abrir perfil do Iago Mauricio no LinkedIn (nova aba)"
             >
               Iago Mauricio
             </a>
@@ -35,7 +35,8 @@ export const Footer: React.FC = () => {
               href="https://www.linkedin.com/in/tacyana-batista-2082b7172"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
+              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-footer-active focus:ring-offset-2 focus:ring-offset-footer-background rounded"
+              aria-label="Abrir perfil da Tacyana no LinkedIn (nova aba)"
             >
               Tacyana
             </a>{" "}
@@ -44,7 +45,8 @@ export const Footer: React.FC = () => {
               href="https://www.linkedin.com/in/wagner-palmeira-ti"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium"
+              className="text-footer hover:text-footer-active transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-footer-active focus:ring-offset-2 focus:ring-offset-footer-background rounded"
+              aria-label="Abrir perfil do Wagner no LinkedIn (nova aba)"
             >
               Wagner
             </a>
@@ -54,7 +56,7 @@ export const Footer: React.FC = () => {
         <div className="hidden md:flex items-center">
           <img
             src="/apple-touch-icon.png"
-            alt="Logo CESMAC"
+            alt="Logo CESMAC - Ícone da aplicação"
             className="w-16 h-16 object-contain"
           />
         </div>
@@ -62,7 +64,7 @@ export const Footer: React.FC = () => {
         <div className="md:hidden flex justify-center pt-2">
           <img
             src="/apple-touch-icon.png"
-            alt="Logo CESMAC"
+            alt="Logo CESMAC - Ícone da aplicação"
             className="w-12 h-12 object-contain"
           />
         </div>

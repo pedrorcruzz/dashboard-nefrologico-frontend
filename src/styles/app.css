@@ -4,28 +4,90 @@
   --color-background-primary: #f0f2f4;
   --color-background-header: #ffffff;
   --color-foreground: #fcc730;
-  --color-text-primary: #000;
+  --color-text-primary: #000000;
   --color-icons: #ffffff;
   --color-icons-text: #ffffff;
   --color-icons-background-active: #0171be;
   --color-icons-background: #0069ad;
-  --color-subtext: #32708f;
+  --color-subtext: #4a5568;
   --color-footer-background: #0171be;
   --color-footer: #ffffff;
   --color-footer-active: #d9edf7;
 
   --color-card-background: #ffffff;
-  --color-card-text: #111111;
-  --color-card-subtext: #a0a9b5;
+  --color-card-text: #1a202c;
+  --color-card-subtext: #718096;
   --color-card-items: #fcc730;
   --color-card-items-bar: #0171be;
-  --color-card-items: #fcc730;
-  --color-card-secondary: #111111;
+  --color-card-secondary: #1a202c;
   --color-card-tertiary: #0171be;
   --color-card-tertiary-text: #ffffff;
-  --color-card-line: #96b8b9;
-  --color-status-success: #009974;
-  --color-status-error: #ff0000;
-  --color-status-warning: #ffa500;
-  --color-status-info: #0000ff;
+  --color-card-line: #e2e8f0;
+  --color-status-success: #38a169;
+  --color-status-error: #e53e3e;
+  --color-status-warning: #dd6b20;
+  --color-status-info: #3182ce;
+}
+
+/* Estilos de acessibilidade */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Melhorar contraste de foco */
+.focus\:ring-2:focus {
+  --tw-ring-width: 2px;
+  --tw-ring-color: var(--color-foreground);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-color: var(--color-background-primary);
+}
+
+/* Estilos para navegação por teclado */
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Melhorar contraste de texto */
+.text-card-subtext {
+  color: var(--color-card-subtext);
+}
+
+/* Estilos para elementos interativos */
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Melhorar contraste de bordas */
+.border-card-line\/40 {
+  border-color: var(--color-card-line);
+}
+
+/* Estilos para skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-foreground);
+  color: var(--color-text-primary);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
 }
