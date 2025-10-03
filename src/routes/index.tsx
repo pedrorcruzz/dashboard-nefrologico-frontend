@@ -15,11 +15,11 @@ import {
   StatCard,
   ChartCard,
   DistributionCard,
-  MetricCard,
 } from "../components/cards";
 import { BsGenderMale, BsGenderFemale } from "react-icons/bs";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import { FaStethoscope, FaMicroscope, FaUserMd } from "react-icons/fa";
+import { PieChart, Pie, Cell, Legend } from "recharts";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -162,6 +162,18 @@ function RouteComponent() {
             aria-label="Estatísticas do sistema"
           >
             <StatCard
+              title="Idade com Mais Pacientes"
+              value={(() => {
+                const ages = data.patientsByAge ?? [];
+                if (ages.length === 0) return "-";
+                const maxAge = ages.reduce((max, current) =>
+                  current.total > max.total ? current : max
+                );
+                return `${maxAge.age} anos`;
+              })()}
+              icon={FaUserMd}
+            />
+            <StatCard
               title="Categorias de Exames"
               value={data.charts.examDistribution.labels.length}
               icon={MdOutlineMedicalServices}
@@ -171,19 +183,6 @@ function RouteComponent() {
               title="Exame Mais Feito"
               value={data.topCategory ?? "-"}
               icon={FaMicroscope}
-            />
-
-            <StatCard
-              title="Idade com Mais Pacientes"
-              value={(() => {
-                const ages = data.patientsByAge ?? [];
-                if (ages.length === 0) return "-";
-                const maxAge = ages.reduce((max, current) => 
-                  current.total > max.total ? current : max
-                );
-                return `${maxAge.age} anos`;
-              })()}
-              icon={FaUserMd}
             />
           </fieldset>
         </section>
@@ -196,23 +195,83 @@ function RouteComponent() {
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
             aria-label="Métricas de atendimento"
           >
-            <MetricCard
-              title="Diagnósticos no Mês"
-              value={data.kpis.examsPerMonth.value}
-              showGraph={true}
-              graphData={data.charts.patientEvolution.data.appliedValue.slice(
-                -8
-              )}
-            />
+            <ChartCard title="Top Diagnósticos CID-10">
+              <div className="h-full w-full" role="img" aria-label="Gráfico dos principais diagnósticos CID-10">
+                {(() => {
+                  const diagnostics = data.topDiagnostics ?? [];
+                  if (diagnostics.length === 0) {
+                    return (
+                      <span className="text-card-subtext text-sm">Sem dados</span>
+                    );
+                  }
+                  const colors = ["#2563eb", "#f59e0b", "#10b981", "#8b5cf6", "#ef4444"];
+                  return (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={diagnostics}
+                          dataKey="count"
+                          nameKey="cid10"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          label={({ cid10 }) => cid10}
+                        >
+                          {diagnostics.map((entry) => (
+                            <Cell key={`cell-${entry.cid10}`} fill={colors[diagnostics.indexOf(entry) % colors.length]} />
+                          ))}
+                        </Pie>
+                        <Legend 
+                          formatter={(value) => {
+                            const diag = diagnostics.find(d => d.cid10 === value);
+                            return diag ? `${diag.cid10}: ${diag.title}` : value;
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  );
+                })()}
+              </div>
+            </ChartCard>
 
-            <MetricCard
-              title="Total Diagnósticos (12m)"
-              value={data.charts.patientEvolution.data.appliedValue.reduce(
-                (s, v) => s + v,
-                0
-              )}
-              showGraph={false}
-            />
+            <ChartCard title="Diagnósticos por Faixa Etária">
+              <div className="h-full w-full" role="img" aria-label="Gráfico de diagnósticos por idade">
+                {(() => {
+                  const ages = (data.diagnosticsByAge ?? [])
+                    .slice()
+                    .sort((a, b) => a.age - b.age);
+                  if (ages.length === 0) {
+                    return (
+                      <span className="text-card-subtext text-sm">Sem dados</span>
+                    );
+                  }
+                  return (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={ages} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis
+                          dataKey="age"
+                          tickFormatter={(v) => String(v).padStart(2, "0")}
+                          tick={{ fill: "#6b7280", fontSize: 10 }}
+                          axisLine={{ stroke: "#e5e7eb" }}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          tick={{ fill: "#6b7280", fontSize: 10 }}
+                          axisLine={{ stroke: "#e5e7eb" }}
+                        />
+                        <Tooltip
+                          cursor={{ fill: "rgba(2, 6, 23, 0.04)" }}
+                          labelFormatter={(v) => `Idade ${String(v).padStart(2, "0")}`}
+                          formatter={(value: number) => [value, "Diagnósticos"] as [number, string]}
+                        />
+                        <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  );
+                })()}
+              </div>
+            </ChartCard>
           </fieldset>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   getDiagnosticosCidData,
+  getDiagnosticosCidTabela,
   getExamesNefroCategoria,
   getExamesNefroNumero,
   getPacientesGenero,
@@ -17,6 +18,8 @@ export interface SystemData {
   ages?: Array<{ age: number; total: number }>;
   topCategory?: string;
   patientsByAge?: Array<{ age: number; total: number }>;
+  topDiagnostics?: Array<{ cid10: string; title: string; count: number }>;
+  diagnosticsByAge?: Array<{ age: number; total: number }>;
 
   kpis: {
     examsPerMonth: {
@@ -97,6 +100,12 @@ export const useSystemData = (): SystemData => {
   const [patientsByAge, setPatientsByAge] = useState<
     Array<{ age: number; total: number }>
   >([]);
+  const [topDiagnostics, setTopDiagnostics] = useState<
+    Array<{ cid10: string; title: string; count: number }>
+  >([]);
+  const [diagnosticsByAge, setDiagnosticsByAge] = useState<
+    Array<{ age: number; total: number }>
+  >([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -159,9 +168,22 @@ export const useSystemData = (): SystemData => {
                 total: Number(a.total_de_cid10 ?? 0) || 0,
               }));
               setAges(arr);
+              setDiagnosticsByAge(arr);
             })
             .catch(() => {});
         });
+
+        // lazy fetch top diagnósticos CID-10 (limitado para página principal)
+        getDiagnosticosCidTabela(0, 5)
+          .then((tableRes) => {
+            const diagnostics = (tableRes.data?.data ?? []).map((d) => ({
+              cid10: d.cid10,
+              title: d.title,
+              count: 1, // cada entrada representa 1 diagnóstico
+            }));
+            setTopDiagnostics(diagnostics);
+          })
+          .catch(() => {});
       } catch (e) {
         console.error("Failed to load system data", e);
       }
@@ -227,6 +249,8 @@ export const useSystemData = (): SystemData => {
     ages,
     topCategory,
     patientsByAge,
+    topDiagnostics,
+    diagnosticsByAge,
 
     kpis: {
       examsPerMonth: {
