@@ -52,10 +52,10 @@ function translateExamName(name: string): string {
   const key = (name || "").toLowerCase().trim();
   const map: Record<string, string> = {
     // common canonical names
-    "ultrasound": "Ultrassom",
+    ultrasound: "Ultrassom",
     "ultrasonic b": "Ultrassom modo B",
-    "mri": "Ressonância Magnética",
-    "ctu": "Urografia por TC",
+    mri: "Ressonância Magnética",
+    ctu: "Urografia por TC",
     "ct urography": "Urografia por TC",
     "mr urography": "Urografia por RM",
     "fine-needle aspiration biopsy": "Biópsia por Agulha Fina",
@@ -174,13 +174,35 @@ export const useSystemData = (): SystemData => {
         });
 
         // lazy fetch top diagnósticos CID-10 (limitado para página principal)
-        getDiagnosticosCidTabela(0, 5)
+        getDiagnosticosCidTabela(0, 50) // pega mais dados para agrupar corretamente
           .then((tableRes) => {
-            const diagnostics = (tableRes.data?.data ?? []).map((d) => ({
-              cid10: d.cid10,
-              title: d.title,
-              count: 1, // cada entrada representa 1 diagnóstico
-            }));
+            const rawData = tableRes.data?.data ?? [];
+            // agrupa por CID-10 e conta ocorrências
+            const grouped = rawData.reduce(
+              (acc, d) => {
+                const key = d.cid10;
+                if (acc[key]) {
+                  acc[key].count += 1;
+                } else {
+                  acc[key] = {
+                    cid10: d.cid10,
+                    title: d.title,
+                    count: 1,
+                  };
+                }
+                return acc;
+              },
+              {} as Record<
+                string,
+                { cid10: string; title: string; count: number }
+              >
+            );
+
+            // converte para array e ordena por count, pega top 8
+            const diagnostics = Object.values(grouped)
+              .sort((a, b) => b.count - a.count)
+              .slice(0, 8);
+
             setTopDiagnostics(diagnostics);
           })
           .catch(() => {});

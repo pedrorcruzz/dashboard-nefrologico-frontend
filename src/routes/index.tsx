@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { useSystemData } from "../hooks/useSystemData";
+import { translateDiagnosisTitle } from "../utils/translations";
 import {
   KPICard,
   StatCard,
@@ -19,7 +20,6 @@ import {
 import { BsGenderMale, BsGenderFemale } from "react-icons/bs";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import { FaStethoscope, FaMicroscope, FaUserMd } from "react-icons/fa";
-import { PieChart, Pie, Cell, Legend } from "recharts";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -195,79 +195,115 @@ function RouteComponent() {
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
             aria-label="Métricas de atendimento"
           >
-            <ChartCard title="Top Diagnósticos CID-10">
-              <div className="h-full w-full" role="img" aria-label="Gráfico dos principais diagnósticos CID-10">
+            <ChartCard title="Diagnósticos Mais Frequentes | CID-10">
+              <div className="h-full w-full overflow-hidden">
                 {(() => {
                   const diagnostics = data.topDiagnostics ?? [];
                   if (diagnostics.length === 0) {
                     return (
-                      <span className="text-card-subtext text-sm">Sem dados</span>
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-card-subtext text-sm">
+                          Sem dados
+                        </span>
+                      </div>
                     );
                   }
-                  const colors = ["#2563eb", "#f59e0b", "#10b981", "#8b5cf6", "#ef4444"];
+
+                  const total = diagnostics.reduce(
+                    (sum, d) => sum + d.count,
+                    0
+                  );
+                  const colors = [
+                    "bg-blue-500",
+                    "bg-orange-500",
+                    "bg-green-500",
+                    "bg-purple-500",
+                    "bg-red-500",
+                  ];
+
                   return (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={diagnostics}
-                          dataKey="count"
-                          nameKey="cid10"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={80}
-                          label={({ cid10 }) => cid10}
-                        >
-                          {diagnostics.map((entry) => (
-                            <Cell key={`cell-${entry.cid10}`} fill={colors[diagnostics.indexOf(entry) % colors.length]} />
-                          ))}
-                        </Pie>
-                        <Legend 
-                          formatter={(value) => {
-                            const diag = diagnostics.find(d => d.cid10 === value);
-                            return diag ? `${diag.cid10}: ${diag.title}` : value;
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <div className="space-y-2 max-h-full overflow-y-auto pr-1">
+                      <div className="text-xs text-card-subtext mb-2 pb-2 border-b border-gray-200">
+                        Top {diagnostics.length} diagnósticos mais frequentes
+                      </div>
+                      {diagnostics.map((diag, index) => {
+                        const percentage = Math.round(
+                          (diag.count / total) * 100
+                        );
+                        return (
+                          <div key={diag.cid10} className="space-y-1 pb-1">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm font-medium text-card-text truncate flex-1 mr-2">
+                                {translateDiagnosisTitle(diag.title)}
+                              </span>
+                              <span className="text-sm font-semibold text-card-text flex-shrink-0">
+                                {percentage}%
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${colors[index % colors.length]}`}
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-card-subtext break-words leading-tight block">
+                              {diag.cid10}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   );
                 })()}
               </div>
             </ChartCard>
 
             <ChartCard title="Diagnósticos por Faixa Etária">
-              <div className="h-full w-full" role="img" aria-label="Gráfico de diagnósticos por idade">
+              <div className="h-full w-full overflow-hidden">
                 {(() => {
                   const ages = (data.diagnosticsByAge ?? [])
                     .slice()
-                    .sort((a, b) => a.age - b.age);
+                    .sort((a, b) => b.total - a.total) // ordena por quantidade
+                    .slice(0, 6); // pega top 6 idades
+
                   if (ages.length === 0) {
                     return (
-                      <span className="text-card-subtext text-sm">Sem dados</span>
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-card-subtext text-sm">
+                          Sem dados
+                        </span>
+                      </div>
                     );
                   }
+
+                  const maxTotal = Math.max(...ages.map((a) => a.total));
+
                   return (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={ages} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis
-                          dataKey="age"
-                          tickFormatter={(v) => String(v).padStart(2, "0")}
-                          tick={{ fill: "#6b7280", fontSize: 10 }}
-                          axisLine={{ stroke: "#e5e7eb" }}
-                        />
-                        <YAxis
-                          allowDecimals={false}
-                          tick={{ fill: "#6b7280", fontSize: 10 }}
-                          axisLine={{ stroke: "#e5e7eb" }}
-                        />
-                        <Tooltip
-                          cursor={{ fill: "rgba(2, 6, 23, 0.04)" }}
-                          labelFormatter={(v) => `Idade ${String(v).padStart(2, "0")}`}
-                          formatter={(value: number) => [value, "Diagnósticos"] as [number, string]}
-                        />
-                        <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <div className="space-y-2 max-h-full overflow-y-auto pr-1">
+                      {ages.map((age) => {
+                        const percentage = Math.round(
+                          (age.total / maxTotal) * 100
+                        );
+                        return (
+                          <div key={age.age} className="space-y-1 pb-1">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm font-medium text-card-text truncate flex-1 mr-2">
+                                {String(age.age).padStart(2, "0")} anos
+                              </span>
+                              <span className="text-sm font-semibold text-card-text flex-shrink-0">
+                                {age.total}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className="h-2 rounded-full bg-green-500"
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   );
                 })()}
               </div>
