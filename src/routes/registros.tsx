@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getDiagnosticosCidTabela } from "../utils/api";
 import { translateDiagnosisTitle } from "../utils/translations";
 
-export const Route = createFileRoute("/relatorios")({
+export const Route = createFileRoute("/registros")({
   component: DiagnosticoTablePage,
 });
 
@@ -153,7 +153,7 @@ function DiagnosticoTablePage() {
               <div className="flex space-x-2">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors"
+                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors cursor-pointer"
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page <= 0}
                 >
@@ -161,7 +161,7 @@ function DiagnosticoTablePage() {
                 </button>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors"
+                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors cursor-pointer"
                   onClick={() =>
                     setPage((p) => Math.min(totalPages - 1, p + 1))
                   }

@@ -9,13 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as RegistrosRouteImport } from './routes/registros'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as IndexRouteImport } from './routes/index'
 
-const RelatoriosRoute = RelatoriosRouteImport.update({
-  id: '/relatorios',
-  path: '/relatorios',
+const RegistrosRoute = RegistrosRouteImport.update({
+  id: '/registros',
+  path: '/registros',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RedirectRoute = RedirectRouteImport.update({
@@ -32,40 +32,40 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/redirect': typeof RedirectRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/registros': typeof RegistrosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/redirect': typeof RedirectRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/registros': typeof RegistrosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/redirect': typeof RedirectRoute
-  '/relatorios': typeof RelatoriosRoute
+  '/registros': typeof RegistrosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/redirect' | '/relatorios'
+  fullPaths: '/' | '/redirect' | '/registros'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/redirect' | '/relatorios'
-  id: '__root__' | '/' | '/redirect' | '/relatorios'
+  to: '/' | '/redirect' | '/registros'
+  id: '__root__' | '/' | '/redirect' | '/registros'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RedirectRoute: typeof RedirectRoute
-  RelatoriosRoute: typeof RelatoriosRoute
+  RegistrosRoute: typeof RegistrosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/relatorios': {
-      id: '/relatorios'
-      path: '/relatorios'
-      fullPath: '/relatorios'
-      preLoaderRoute: typeof RelatoriosRouteImport
+    '/registros': {
+      id: '/registros'
+      path: '/registros'
+      fullPath: '/registros'
+      preLoaderRoute: typeof RegistrosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/redirect': {
@@ -88,7 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RedirectRoute: RedirectRoute,
-  RelatoriosRoute: RelatoriosRoute,
+  RegistrosRoute: RegistrosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
