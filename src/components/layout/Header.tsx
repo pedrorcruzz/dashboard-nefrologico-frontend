@@ -99,7 +99,7 @@ export const Header = () => {
                 : ""
             }`}
             aria-current={currentPath === "/relatorios" ? "page" : undefined}
-            aria-label="Ir para página de relatórios"
+            aria-label="Ir para registros de diagnósticos"
           >
             <AiOutlineBarChart
               className={`w-5 h-5 ${
@@ -116,7 +116,7 @@ export const Header = () => {
                   : "text-text-primary/60"
               }`}
             >
-              Relatórios
+              Registros
             </span>
           </Link>
 

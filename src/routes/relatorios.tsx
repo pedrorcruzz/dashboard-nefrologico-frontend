@@ -1,13 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { useSystemData } from "../hooks/useSystemData";
-import {
-  getDiagnosticosCidFaixaEtaria,
-  getDiagnosticosCidTabela,
-} from "../utils/api";
+import { useEffect, useState } from "react";
+import { getDiagnosticosCidTabela } from "../utils/api";
+import { translateDiagnosisTitle } from "../utils/translations";
 
 export const Route = createFileRoute("/relatorios")({
-  component: ReportPage,
+  component: DiagnosticoTablePage,
 });
 
 interface Row {
@@ -19,34 +16,23 @@ interface Row {
   gender: string;
 }
 
-function ReportPage() {
+function DiagnosticoTablePage() {
   const [page, setPage] = useState(0);
-  const [limit] = useState(10);
+  const [limit] = useState(20); // Limite padrão para a tabela
   const [rows, setRows] = useState<Row[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
-  const [ageData, setAgeData] = useState<{ age: number; total: number }[]>([]);
-  const summary = useSystemData();
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       try {
-        const [table, ages] = await Promise.all([
-          getDiagnosticosCidTabela(page, limit),
-          getDiagnosticosCidFaixaEtaria(),
-        ]);
+        const table = await getDiagnosticosCidTabela(page, limit);
         if (cancelled) return;
         const t = table.data;
         setRows(t.data);
         setTotalPages(t.totalPages);
         setTotal(t.total);
-        setAgeData(
-          (ages.data ?? []).map((a) => ({
-            age: a.idade,
-            total: Number(a.total_de_cid10 ?? 0) || 0,
-          }))
-        );
       } catch (e) {
         console.error("Falha ao carregar relatórios", e);
       }
@@ -57,80 +43,21 @@ function ReportPage() {
     };
   }, [page, limit]);
 
-  const maxAge = useMemo(
-    () => Math.max(1, ...ageData.map((a) => a.total)),
-    [ageData]
-  );
-
   return (
     <div className="min-h-screen bg-background-primary pb-12 md:pb-20">
       <div className="w-full space-y-6 px-2 md:px-6">
-        <section className="space-y-4">
-          <h2 className="text-card-text text-lg font-semibold">Diagnósticos por Mês (últimos 12 meses)</h2>
-          <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
-            <div className="space-y-2" role="img" aria-label="Barras com total de diagnósticos por mês">
-              {summary.charts.patientEvolution.labels.map((label, idx) => (
-                <div key={`report-month-${label}-${summary.charts.patientEvolution.data.appliedValue[idx]}`} className="flex items-center gap-3">
-                  <span className="text-card-text text-xs w-12">{label}</span>
-                  <div className="flex-1 bg-card-tertiary rounded-full h-3">
-                    <div
-                      className="h-3 bg-card-items rounded-full"
-                      style={{ width: `${Math.min(100, (summary.charts.patientEvolution.data.appliedValue[idx] / Math.max(1, Math.max(...summary.charts.patientEvolution.data.appliedValue))) * 100)}%` }}
-                      title={`${label}: ${summary.charts.patientEvolution.data.appliedValue[idx]}`}
-                    />
-                  </div>
-                  <span className="text-card-text text-xs w-10 text-right">{summary.charts.patientEvolution.data.appliedValue[idx]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Tabela de Diagnósticos CID10 */}
         <section className="space-y-4">
           <h2 className="text-card-text text-lg font-semibold">
-            CID10 por Faixa Etária
-          </h2>
-          <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
-            <ul className="space-y-2" aria-label="CID10 por idade">
-              {ageData
-                .sort((a, b) => a.age - b.age)
-                .map((a) => (
-                  <li
-                    key={`age-${a.age}`}
-                    className="flex items-center space-x-3"
-                  >
-                    <span className="text-card-text text-sm w-10">{a.age}</span>
-                    <div className="flex-1 bg-card-tertiary rounded-full h-3">
-                      <div
-                        className="h-3 bg-card-items rounded-full"
-                        style={{ width: `${(a.total / maxAge) * 100}%` }}
-                        aria-label={`Idade ${a.age}: ${a.total}`}
-                        role="progressbar"
-                        aria-valuemin={0}
-                        aria-valuemax={maxAge}
-                        aria-valuenow={a.total}
-                      />
-                    </div>
-                    <span className="text-card-text text-sm w-12 text-right">
-                      {a.total}
-                    </span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-card-text text-lg font-semibold">
-            Tabela de Diagnósticos CID10
+            Registros de Diagnósticos CID-10
           </h2>
           <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
                   <tr className="text-left text-card-subtext">
-                    <th className="py-2 pr-4">ID</th>
                     <th className="py-2 pr-4">CID-10</th>
-                    <th className="py-2 pr-4">Título</th>
+                    <th className="py-2 pr-4">Diagnóstico</th>
                     <th className="py-2 pr-4">Data</th>
                     <th className="py-2 pr-4">Idade</th>
                     <th className="py-2 pr-0">Gênero</th>
@@ -142,9 +69,10 @@ function ReportPage() {
                       key={r.id}
                       className="border-t border-card-line/30 text-card-text"
                     >
-                      <td className="py-2 pr-4">{r.id}</td>
                       <td className="py-2 pr-4">{r.cid10}</td>
-                      <td className="py-2 pr-4">{r.title}</td>
+                      <td className="py-2 pr-4">
+                        {translateDiagnosisTitle(r.title)}
+                      </td>
                       <td className="py-2 pr-4">
                         {new Date(r.diagnosis_date).toLocaleDateString()}
                       </td>

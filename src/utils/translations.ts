@@ -32,6 +32,20 @@ const diagnosisTranslations: Record<string, string> = {
   "Other specified disorder": "Outro transtorno especificado",
   "Complication of procedure": "Complicação de procedimento",
   "Postprocedural disorder": "Transtorno pós-procedimento",
+
+  // Diagnósticos adicionais
+  "Calculus of kidney": "Cálculo renal",
+  "Chronic kidney disease, unspecified":
+    "Doença renal crônica, não especificada",
+  Hydroureter: "Hidroureter",
+  "Kinking and stricture of ureter without hydronephrosis":
+    "Torção e estenose do ureter sem hidronefrose",
+  "Neuromuscular dysfunction of bladder, unspecified":
+    "Disfunção neuromuscular da bexiga, não especificada",
+  "Noninflammatory disorder of ovary, fallopian tube and broad ligament, unspecified":
+    "Transtorno não inflamatório do ovário, trompa de falópio e ligamento largo, não especificado",
+  "Other and unspecified hydronephrosis":
+    "Outras hidronefroses não especificadas",
 };
 
 /**
