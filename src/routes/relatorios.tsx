@@ -64,6 +64,16 @@ function ReportPage() {
     <div className="min-h-screen bg-background-primary pb-12 md:pb-20">
       <div className="w-full space-y-6 px-2 md:px-6">
         <section className="space-y-4">
+          <h2 className="text-card-text text-lg font-semibold">Diagnósticos por Mês (últimos 12 meses)</h2>
+          <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
+            <div className="space-y-2" role="img" aria-label="Barras com total de diagnósticos por mês">
+              {/** We reuse the same computation as in useSystemData by deriving from ageData not needed here; this report focuses on table & age. We'll fetch minimal again in UI: */}
+              {/* Placeholder: this section will be populated via the same hook route if needed */}
+              <span className="text-card-subtext text-sm">Consolidado exibido na página Resumo.</span>
+            </div>
+          </div>
+        </section>
+        <section className="space-y-4">
           <h2 className="text-card-text text-lg font-semibold">
             CID10 por Faixa Etária
           </h2>

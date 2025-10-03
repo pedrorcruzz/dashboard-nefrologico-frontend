@@ -64,61 +64,32 @@ function RouteComponent() {
             Gráficos e Visualizações
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChartCard title="Evolução de Pacientes">
-              <div className="h-full flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-card-subtext text-sm mb-4">
-                    Gráfico de evolução dos pacientes ao longo do tempo
-                  </div>
+            <ChartCard title="Diagnósticos por Mês (últimos 12 meses)">
+              <div
+                className="h-full flex flex-col justify-center gap-2"
+                role="img"
+                aria-label="Barras com total de diagnósticos por mês"
+              >
+                {data.charts.patientEvolution.labels.map((label, index) => (
                   <div
-                    className="space-y-2"
-                    role="img"
-                    aria-label="Gráfico de barras mostrando evolução de pacientes por período"
+                    key={`diag-month-${label}-${data.charts.patientEvolution.data.appliedValue[index]}`}
+                    className="flex items-center gap-3"
                   >
-                    {data.charts.patientEvolution.labels.map((label, index) => (
+                    <span className="text-card-text text-xs w-12">{label}</span>
+                    <div className="flex-1 bg-card-tertiary rounded-full h-3">
                       <div
-                        key={`patient-evolution-${label}-${data.charts.patientEvolution.data.appliedValue[index]}-${index}`}
-                        className="flex items-center space-x-4"
-                      >
-                        <span className="text-card-text text-sm w-16">
-                          {label}
-                        </span>
-                        <div
-                          className="flex-1 bg-card-tertiary rounded-full h-4 flex"
-                          role="progressbar"
-                          aria-valuenow={
-                            data.charts.patientEvolution.data.appliedValue[
-                              index
-                            ]
-                          }
-                          aria-valuemin={0}
-                          aria-valuemax={10000}
-                          aria-label={`${label}: ${data.charts.patientEvolution.data.appliedValue[index]} pacientes`}
-                        >
-                          <div
-                            className="h-4 bg-card-items rounded-l-full"
-                            style={{
-                              width: `${(data.charts.patientEvolution.data.appliedValue[index] / 10000) * 100}%`,
-                            }}
-                          />
-                          <div
-                            className="h-4 bg-card-items-bar rounded-r-full"
-                            style={{
-                              width: `${((10000 - data.charts.patientEvolution.data.appliedValue[index]) / 10000) * 100}%`,
-                            }}
-                          />
-                        </div>
-                        <span className="text-card-text text-sm w-16 text-right">
-                          {
-                            data.charts.patientEvolution.data.appliedValue[
-                              index
-                            ]
-                          }
-                        </span>
-                      </div>
-                    ))}
+                        className="h-3 bg-card-items rounded-full"
+                        style={{
+                          width: `${Math.min(100, (data.charts.patientEvolution.data.appliedValue[index] / Math.max(1, Math.max(...data.charts.patientEvolution.data.appliedValue))) * 100)}%`,
+                        }}
+                        title={`${label}: ${data.charts.patientEvolution.data.appliedValue[index]}`}
+                      />
+                    </div>
+                    <span className="text-card-text text-xs w-10 text-right">
+                      {data.charts.patientEvolution.data.appliedValue[index]}
+                    </span>
                   </div>
-                </div>
+                ))}
               </div>
             </ChartCard>
 

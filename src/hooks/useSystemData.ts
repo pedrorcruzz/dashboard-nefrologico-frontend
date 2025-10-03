@@ -118,12 +118,12 @@ export const useSystemData = (): SystemData => {
     };
   }, []);
 
-  // Compute evolution over last 6 months from diagnosisDates
+  // Compute evolution over last 12 months from diagnosisDates
   const evolution = useMemo(() => {
     const now = new Date();
-    // Create buckets for last 6 months (oldest -> newest)
+    // Create buckets for last 12 months (oldest -> newest)
     const months: { start: Date; label: string }[] = [];
-    for (let i = 5; i >= 0; i -= 1) {
+    for (let i = 11; i >= 0; i -= 1) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       months.push({ start: d, label: formatMonthLabel(d) });
     }
@@ -150,7 +150,6 @@ export const useSystemData = (): SystemData => {
     return diagnosisDates.filter((d) => d >= start && d < next).length;
   }, [diagnosisDates]);
 
-  // Exam distribution as percentages by category
   const examDistribution = useMemo(() => {
     const total = categories.reduce((s, c) => s + c.count, 0) || 1;
     const labels = categories.map((c) => c.label);
@@ -160,13 +159,13 @@ export const useSystemData = (): SystemData => {
     return { labels, data };
   }, [categories]);
 
-  const examsLastMonth = evolution.counts.at(-2) ?? 0; // last full month (previous bucket)
+  const examsLastMonth = evolution.counts.at(-2) ?? 0;
   const examsThisMonth = evolution.counts.at(-1) ?? 0;
   const variation = examsThisMonth - examsLastMonth;
 
   const systemData: SystemData = {
     totalPatients: totals.patients,
-    activePatients: gender.M + gender.F, // proxy until specific endpoint exists
+    activePatients: gender.M + gender.F,
     newPatientsThisMonth: newThisMonth,
     totalExams: totals.exams,
     gender,
