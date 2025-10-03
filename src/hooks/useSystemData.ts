@@ -5,6 +5,7 @@ import {
   getExamesNefroNumero,
   getPacientesGenero,
   getPacientesNumero,
+  getPacientesIdade,
 } from "../utils/api";
 
 export interface SystemData {
@@ -15,6 +16,7 @@ export interface SystemData {
   gender: { M: number; F: number };
   ages?: Array<{ age: number; total: number }>;
   topCategory?: string;
+  patientsByAge?: Array<{ age: number; total: number }>;
 
   kpis: {
     examsPerMonth: {
@@ -72,6 +74,9 @@ export const useSystemData = (): SystemData => {
   const [diagnosisDates, setDiagnosisDates] = useState<Date[]>([]);
   const [ages, setAges] = useState<Array<{ age: number; total: number }>>([]);
   const [topCategory, setTopCategory] = useState<string>("");
+  const [patientsByAge, setPatientsByAge] = useState<
+    Array<{ age: number; total: number }>
+  >([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -105,7 +110,7 @@ export const useSystemData = (): SystemData => {
         setCategories(mappedCats);
         if (mappedCats.length > 0) {
           setTopCategory(
-            mappedCats.slice().sort((a, b) => b.count - a.count)[0].label,
+            mappedCats.slice().sort((a, b) => b.count - a.count)[0].label
           );
         }
 
@@ -115,6 +120,16 @@ export const useSystemData = (): SystemData => {
           if (parsed) dates.push(parsed);
         });
         setDiagnosisDates(dates);
+        // pacientes por idade
+        getPacientesIdade()
+          .then((res) => {
+            const arr = (res.data ?? []).map((i) => ({
+              age: i.idade,
+              total: Number(i.quantidade ?? 0) || 0,
+            }));
+            setPatientsByAge(arr);
+          })
+          .catch(() => {});
         // lazy fetch faixa etária (não bloqueia UI)
         import("../utils/api").then(({ getDiagnosticosCidFaixaEtaria }) => {
           getDiagnosticosCidFaixaEtaria()
@@ -191,6 +206,7 @@ export const useSystemData = (): SystemData => {
     gender,
     ages,
     topCategory,
+    patientsByAge,
 
     kpis: {
       examsPerMonth: {

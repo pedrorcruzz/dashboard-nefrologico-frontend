@@ -1,5 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useId } from "react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
 import { useSystemData } from "../hooks/useSystemData";
 import {
   KPICard,
@@ -64,32 +73,59 @@ function RouteComponent() {
             Gráficos e Visualizações
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChartCard title="Diagnósticos por Mês (últimos 12 meses)">
+            <ChartCard title="Pacientes por Idade">
               <div
-                className="h-full flex flex-col justify-center gap-2"
+                className="h-full w-full"
                 role="img"
-                aria-label="Barras com total de diagnósticos por mês"
+                aria-label="Gráfico de colunas de pacientes por idade"
               >
-                {data.charts.patientEvolution.labels.map((label, index) => (
-                  <div
-                    key={`diag-month-${label}-${data.charts.patientEvolution.data.appliedValue[index]}`}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="text-card-text text-xs w-12">{label}</span>
-                    <div className="flex-1 bg-card-tertiary rounded-full h-3">
-                      <div
-                        className="h-3 bg-card-items rounded-full"
-                        style={{
-                          width: `${Math.min(100, (data.charts.patientEvolution.data.appliedValue[index] / Math.max(1, Math.max(...data.charts.patientEvolution.data.appliedValue))) * 100)}%`,
-                        }}
-                        title={`${label}: ${data.charts.patientEvolution.data.appliedValue[index]}`}
-                      />
-                    </div>
-                    <span className="text-card-text text-xs w-10 text-right">
-                      {data.charts.patientEvolution.data.appliedValue[index]}
-                    </span>
-                  </div>
-                ))}
+                {(() => {
+                  const items = (data.patientsByAge ?? [])
+                    .slice()
+                    .sort((a, b) => a.age - b.age);
+                  if (items.length === 0) {
+                    return (
+                      <span className="text-card-subtext text-sm">
+                        Sem dados
+                      </span>
+                    );
+                  }
+                  return (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={items}
+                        margin={{ top: 8, right: 16, left: 0, bottom: 8 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis
+                          dataKey="age"
+                          tickFormatter={(v) => String(v).padStart(2, "0")}
+                          tick={{ fill: "#6b7280", fontSize: 10 }}
+                          axisLine={{ stroke: "#e5e7eb" }}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          tick={{ fill: "#6b7280", fontSize: 10 }}
+                          axisLine={{ stroke: "#e5e7eb" }}
+                        />
+                        <Tooltip
+                          cursor={{ fill: "rgba(2, 6, 23, 0.04)" }}
+                          labelFormatter={(v) =>
+                            `Idade ${String(v).padStart(2, "0")}`
+                          }
+                          formatter={(value: number) =>
+                            [value, "Pacientes"] as [number, string]
+                          }
+                        />
+                        <Bar
+                          dataKey="total"
+                          fill="#2563eb"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  );
+                })()}
               </div>
             </ChartCard>
 
@@ -98,35 +134,19 @@ function RouteComponent() {
               data={(() => {
                 const labels = data.charts.examDistribution.labels;
                 const values = data.charts.examDistribution.data;
-                const pairs = labels.map((l, i) => ({
+                const palette = [
+                  "#0171be", // Ultrasound (azul)
+                  "#fcc730", // Ultrasonic B (amarelo)
+                  "#34d399", // MRI (verde)
+                  "#f59e0b", // CTU (laranja)
+                  "#9ca3af", // MR Urography (cinza)
+                  "#8b5cf6", // Fine-needle Aspiration biopsy (roxo)
+                ];
+                return labels.map((l, i) => ({
                   label: l,
                   value: values[i] ?? 0,
-                }));
-                const sorted = pairs.sort((a, b) => b.value - a.value);
-                const top = sorted.slice(0, 4);
-                const rest = sorted.slice(4);
-                const restValue = rest.reduce((s, x) => s + x.value, 0);
-                const palette = [
-                  "#0171be",
-                  "#fcc730",
-                  "#34d399",
-                  "#f59e0b",
-                  "#9ca3af",
-                ];
-                const topWithColors = top.map((t, i) => ({
-                  ...t,
                   color: palette[i % palette.length],
                 }));
-                return restValue > 0
-                  ? [
-                      ...topWithColors,
-                      {
-                        label: "Outros",
-                        value: Number(restValue.toFixed(2)),
-                        color: palette[4],
-                      },
-                    ]
-                  : topWithColors;
               })()}
             />
           </div>
@@ -142,7 +162,10 @@ function RouteComponent() {
           >
             <StatCard
               title="Total Diagnósticos (12m)"
-              value={data.charts.patientEvolution.data.appliedValue.reduce((s, v) => s + v, 0)}
+              value={data.charts.patientEvolution.data.appliedValue.reduce(
+                (s, v) => s + v,
+                0
+              )}
               icon={AiOutlineUser}
             />
 
@@ -172,7 +195,9 @@ function RouteComponent() {
               title="Diagnósticos no Mês"
               value={data.kpis.examsPerMonth.value}
               showGraph={true}
-              graphData={data.charts.patientEvolution.data.appliedValue.slice(-8)}
+              graphData={data.charts.patientEvolution.data.appliedValue.slice(
+                -8
+              )}
             />
 
             <MetricCard

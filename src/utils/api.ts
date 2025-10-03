@@ -34,6 +34,11 @@ export interface DiagnosticoFaixaEtariaItem {
   total_de_cid10: string;
 }
 
+export interface PacientesIdadeItem {
+  idade: number;
+  quantidade: string;
+}
+
 export interface DiagnosticoTabelaPage {
   total: number;
   page: number;
@@ -100,4 +105,8 @@ export async function getDiagnosticosCidFaixaEtaria() {
 export async function getDiagnosticosCidTabela(page = 0, limit = 10) {
   const qs = new URLSearchParams({ page: String(page), limit: String(limit) });
   return httpGet<DiagnosticoTabelaPage>(`/diagnosticos/cid/tabela?${qs}`);
+}
+
+export async function getPacientesIdade() {
+  return httpGet<PacientesIdadeItem[]>("/pacientes/idade");
 }
