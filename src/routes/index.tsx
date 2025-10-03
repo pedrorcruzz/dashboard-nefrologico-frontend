@@ -10,7 +10,10 @@ import {
   CartesianGrid,
 } from "recharts";
 import { useSystemData } from "../hooks/useSystemData";
-import { translateDiagnosisTitle } from "../utils/translations";
+import {
+  translateDiagnosisTitle,
+  formatNumberWithDot,
+} from "../utils/translations";
 import {
   KPICard,
   StatCard,
@@ -45,24 +48,24 @@ function RouteComponent() {
           >
             <KPICard
               title="Total de Pacientes"
-              value={data.totalPatients.toLocaleString()}
+              value={formatNumberWithDot(data.totalPatients)}
               icon={FaUserMd}
             />
 
             <KPICard
               title="Pacientes Masculinos"
-              value={data.gender.M}
+              value={formatNumberWithDot(data.gender.M)}
               icon={BsGenderMale}
             />
 
             <KPICard
               title="Pacientes Femininos"
-              value={data.gender.F}
+              value={formatNumberWithDot(data.gender.F)}
               icon={BsGenderFemale}
             />
             <KPICard
               title="Total de Exames"
-              value={data.totalExams.toLocaleString()}
+              value={formatNumberWithDot(data.totalExams)}
               icon={FaStethoscope}
             />
           </fieldset>

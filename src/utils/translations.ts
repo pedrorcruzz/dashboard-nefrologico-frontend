@@ -61,3 +61,12 @@ export function addDiagnosisTranslation(
 export function getAllTranslations(): Record<string, string> {
   return { ...diagnosisTranslations };
 }
+
+/**
+ * Formata números com separador de milhares usando ponto (.)
+ * @param value - Número a ser formatado
+ * @returns String formatada com ponto como separador de milhares
+ */
+export function formatNumberWithDot(value: number): string {
+  return value.toLocaleString("pt-BR").replace(",", ".");
+}
