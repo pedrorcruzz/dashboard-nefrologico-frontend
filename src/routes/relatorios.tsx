@@ -18,10 +18,23 @@ interface Row {
 
 function DiagnosticoTablePage() {
   const [page, setPage] = useState(0);
-  const [limit] = useState(20); // Limite padrão para a tabela
+  const [isMobile, setIsMobile] = useState(false);
+  const limit = isMobile ? 5 : 13;
   const [rows, setRows] = useState<Row[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
+
+  // Detectar se é mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -51,8 +64,9 @@ function DiagnosticoTablePage() {
           <h2 className="text-card-text text-lg font-semibold">
             Registros de Diagnósticos CID-10
           </h2>
-          <div className="bg-card-background rounded-lg p-6 border border-card-line/40">
-            <div className="overflow-x-auto">
+          <div className="bg-card-background rounded-lg p-3 md:p-6 border border-card-line/40">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
                   <tr className="text-left text-card-subtext">
@@ -83,28 +97,77 @@ function DiagnosticoTablePage() {
                 </tbody>
               </table>
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-card-subtext text-sm">
+
+            {/* Mobile Cards */}
+            <div className="md:hidden space-y-3">
+              {rows.map((r) => (
+                <div
+                  key={r.id}
+                  className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+                >
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide">
+                        CID-10
+                      </span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {r.cid10}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide">
+                        Diagnóstico
+                      </span>
+                      <span className="text-sm text-gray-900 text-right flex-1 ml-2">
+                        {translateDiagnosisTitle(r.title)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide">
+                        Data
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {new Date(r.diagnosis_date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide">
+                        Idade
+                      </span>
+                      <span className="text-sm text-gray-900">{r.age}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide">
+                        Gênero
+                      </span>
+                      <span className="text-sm text-gray-900">{r.gender}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-3">
+              <span className="text-card-subtext text-sm text-center sm:text-left">
                 Página {page + 1} de {totalPages} — Total: {total}
               </span>
-              <div className="space-x-2">
+              <div className="flex space-x-2">
                 <button
                   type="button"
-                  className="px-3 py-1 bg-card-items text-white rounded disabled:opacity-50"
+                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors"
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page <= 0}
                 >
-                  Anterior
+                  ← Anterior
                 </button>
                 <button
                   type="button"
-                  className="px-3 py-1 bg-card-items text-white rounded disabled:opacity-50"
+                  className="px-4 py-2 bg-card-items text-white rounded disabled:opacity-50 text-sm font-medium hover:bg-opacity-90 transition-colors"
                   onClick={() =>
                     setPage((p) => Math.min(totalPages - 1, p + 1))
                   }
                   disabled={page >= totalPages - 1}
                 >
-                  Próxima
+                  Próxima →
                 </button>
               </div>
             </div>

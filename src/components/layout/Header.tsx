@@ -5,11 +5,14 @@ import {
   AiOutlineBarChart,
   AiOutlineHome,
 } from "react-icons/ai";
+import { FAQPopup } from "../FAQPopup";
+import { useFAQPopup } from "../../hooks/useFAQPopup";
 
 export const Header = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const navigationId = useId();
+  const { isOpen, openPopup, closePopup } = useFAQPopup();
 
   return (
     <header className="w-full fixed top-0 left-0 right-0 z-50">
@@ -45,7 +48,8 @@ export const Header = () => {
 
             <button
               type="button"
-              className="w-8 h-8 bg-icons-background rounded-lg flex items-center justify-center hover:bg-icons-background-active transition-colors relative -top-4 -left-4 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
+              onClick={openPopup}
+              className="w-8 h-8 bg-icons-background rounded-lg flex items-center justify-center hover:bg-icons-background-active transition-colors relative -top-4 -left-4 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 cursor-pointer"
               aria-label="Abrir ajuda e informações"
               title="Ajuda e informações"
             >
@@ -132,12 +136,16 @@ export const Header = () => {
 
       <button
         type="button"
-        className="md:hidden absolute top-4 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center hover:bg-icons-background-active transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
+        onClick={openPopup}
+        className="md:hidden absolute top-4 right-4 w-6 h-6 bg-icons-background rounded-lg flex items-center justify-center hover:bg-icons-background-active transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 cursor-pointer"
         aria-label="Abrir menu de ajuda"
         title="Ajuda"
       >
         <AiOutlineQuestion className="w-3 h-3 text-icons" aria-hidden="true" />
       </button>
+
+      {/* FAQ Popup */}
+      <FAQPopup isOpen={isOpen} onClose={closePopup} />
     </header>
   );
 };
