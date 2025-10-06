@@ -181,7 +181,7 @@ function DiagnosticoTablePage() {
                 <div className="flex space-x-1">
                   <button
                     type="button"
-                    className="px-3 py-2 bg-yellow-500 text-white rounded disabled:opacity-50 text-sm font-medium cursor-pointer"
+                    className="px-2 py-1.5 md:px-3 md:py-2 bg-yellow-500 text-white rounded disabled:opacity-50 text-xs md:text-sm font-medium cursor-pointer"
                     onClick={() => setPage((p) => Math.max(0, p - 1))}
                     disabled={page <= 0}
                   >
@@ -189,7 +189,7 @@ function DiagnosticoTablePage() {
                   </button>
                   <button
                     type="button"
-                    className="px-3 py-2 bg-yellow-500 text-white rounded disabled:opacity-50 text-sm font-medium cursor-pointer"
+                    className="px-2 py-1.5 md:px-3 md:py-2 bg-yellow-500 text-white rounded disabled:opacity-50 text-xs md:text-sm font-medium cursor-pointer"
                     onClick={() =>
                       setPage((p) => Math.min(totalPages - 1, p + 1))
                     }
