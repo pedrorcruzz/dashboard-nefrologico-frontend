@@ -96,18 +96,18 @@ export const Header = () => {
           </Link>
 
           <Link
-            to="/registros"
+            to="/records"
             className={`flex flex-col items-center space-y-1 focus:outline-none p-1 ${
-              currentPath === "/registros"
+              currentPath === "/records"
                 ? "border-b-2 border-foreground pb-1"
                 : ""
             }`}
-            aria-current={currentPath === "/registros" ? "page" : undefined}
+            aria-current={currentPath === "/records" ? "page" : undefined}
             aria-label="Ir para registros de diagnósticos"
           >
             <AiOutlineBarChart
               className={`w-5 h-5 ${
-                currentPath === "/registros"
+                currentPath === "/records"
                   ? "text-text-primary"
                   : "text-text-primary/60"
               }`}
@@ -115,7 +115,7 @@ export const Header = () => {
             />
             <span
               className={`text-sm font-medium ${
-                currentPath === "/registros"
+                currentPath === "/records"
                   ? "text-text-primary"
                   : "text-text-primary/60"
               }`}

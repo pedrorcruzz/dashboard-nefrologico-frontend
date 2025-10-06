@@ -46,6 +46,24 @@ const diagnosisTranslations: Record<string, string> = {
     "Transtorno não inflamatório do ovário, trompa de falópio e ligamento largo, não especificado",
   "Other and unspecified hydronephrosis":
     "Outras hidronefroses não especificadas",
+
+  // Novas traduções
+  "Vesicoureteral-reflux-associated uropathy":
+    "Uropatia associada ao refluxo vesicoureteral",
+  "Urinary tract infection, site not specified":
+    "Infecção do trato urinário, local não especificado",
+  "Urethral fistula": "Fístula uretral",
+  "Unspecified nephritic syndrome": "Síndrome nefrítica não especificada",
+  "Unspecified kidney failure": "Insuficiência renal não especificada",
+  "Torsion of testis": "Torção do testículo",
+  "Renal and perinephric abscess": "Abscesso renal e perinefrítico",
+  "Torsion of ovary, ovarian pedicle and fallopian tube":
+    "Torção do ovário, pedículo ovariano e trompa de falópio",
+  "Other specified disorders of kidney and ureter":
+    "Outros transtornos especificados do rim e ureter",
+  "Unspecified contracted kidney": "Rim contraído não especificado",
+  "Recurrent and persistent haematuria": "Hematúria recorrente e persistente",
+  "Other and unspecified ovarian cysts": "Outros cistos ovarianos não especificados",
 };
 
 /**
